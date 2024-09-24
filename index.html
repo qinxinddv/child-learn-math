@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数学学习模块 - 加法练习</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  .container {
+    background-color: #fff;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+  }
+  .question {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  .answers {
+    text-align: center;
+  }
+  .answers button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    background-color: #6495ED;
+    cursor: pointer;
+  }
+  .answers button.correct {
+    background-color: #4CAF50;
+  }
+  .answers button.wrong {
+    background-color: #f44336;
+  }
+  #result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>加法练习</h1>
+  <div class="question" id="question">
+    <span id="first-number">2</span> + <span id="second-number">1</span> = ?
+  </div>
+  <div class="answers">
+    <button onclick="checkAnswer(3)">3</button>
+    <button onclick="checkAnswer(1)">1</button>
+    <button onclick="checkAnswer(4)">4</button>
+    <button onclick="checkAnswer(2)">2</button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<script>
+  var currentAnswer;
+
+  function generateQuestion() {
+    var firstNumber = Math.floor(Math.random() * 10);
+    var secondNumber = Math.floor(Math.random() * 10);
+    currentAnswer = firstNumber + secondNumber;
+    document.getElementById('first-number').textContent = firstNumber;
+    document.getElementById('second-number').textContent = secondNumber;
+    var answers = document.querySelector('.answers');
+    answers.innerHTML = `<button onclick="checkAnswer(${currentAnswer})">${currentAnswer}</button>
+                          <button onclick="checkAnswer(${currentAnswer - 2})">${currentAnswer - 2 > 0 ? currentAnswer - 2 : 0}</button>
+                          <button onclick="checkAnswer(${currentAnswer - 1})">${currentAnswer - 1 > 0 ? currentAnswer - 1 : 0}</button>
+                          <button onclick="checkAnswer(${currentAnswer + 1 < 10 ? currentAnswer + 1 : currentAnswer - 1})">${currentAnswer + 1 < 10 ? currentAnswer + 1 : currentAnswer - 1}</button>`;
+    document.querySelector('.answers button').forEach(button => {
+      button.classList.remove('correct', 'wrong');
+    });
+    document.getElementById('result').textContent = '';
+  }
+
+  function checkAnswer(userAnswer) {
+    if (userAnswer === currentAnswer) {
+      document.getElementById('result').textContent = '正确！🎉';
+      document.getElementById('result').style.color = 'green';
+      document.querySelector('button[onclick="checkAnswer(' + userAnswer + ')"]').classList.add('correct');
+      setTimeout(generateQuestion, 1500); // Generate a new question after 1.5 seconds
+    } else {
+      document.getElementById('result').textContent = '错误，请再试一次。😢';
+      document.getElementById('result').style.color = 'red';
+      document.querySelector('button[onclick="checkAnswer(' + userAnswer + ')"]').classList.add('wrong');
+    }
+  }
+
+  // Generate the first question
+  generateQuestion();
+</script>
+
+</body>
+</html>
